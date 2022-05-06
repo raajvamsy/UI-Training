@@ -1,2 +1,2 @@
-# FrontEnd---Game-
+# UI Training
 Training
