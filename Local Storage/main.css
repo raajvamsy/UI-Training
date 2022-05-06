@@ -1,0 +1,80 @@
+body{
+    background-color: antiquewhite;
+    align-items: center;
+    margin: 0%;
+    padding: 0%;
+}
+.game-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+.board-container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 60vw;
+    border: 1px solid black;
+}
+.board-container .element{
+    display: flex;
+    width: 15vw;
+    height: 15vh;
+    background-color: gainsboro;
+    align-items: center;
+    justify-content: center;
+    margin: 2%;
+    border: 1px solid green;
+}
+.game-info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.game-info a{
+    text-decoration: none;
+    color: black;
+    margin-right: 5vw;
+}
+.game-info span{
+    margin-right: 5vw;
+}
+
+.board-history{
+    display: flex;
+    flex-wrap: wrap;
+    width: 6vw;
+}
+.board-history span{
+    width: 100%;
+}
+.board-history .element{
+    display: flex;
+    width: 1.5vw;
+    height: 1.5vh;
+    background-color: gainsboro;
+    align-items: center;
+    justify-content: center;
+    margin: 2%;
+}
+.history{
+    width: 20%;
+    height: 250px;
+    font-size: 10px;
+    margin: 5px;
+    overflow-y: auto;
+}
+.comment-section{
+    margin: 2%;
+    width: 100%;
+}
+.comment-section div{
+    margin: 2%;
+}
+textarea{
+    width: 100%;
+}
+.comment{
+    display: none;
+}
