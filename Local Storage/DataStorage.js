@@ -18,7 +18,6 @@ class DataStorage{
             _.slice(box, 0, 1);
             game.gameState = box;
             game.status = this.historyObject[index].stat;
-            return game;
         }
         else{
             if(this.currentGameObject != null){
@@ -26,11 +25,9 @@ class DataStorage{
                 _.slice(box, 0, 1);
                 game.gameState = box;
                 game.status = this.currentGameObject.stat;
-                return game;
             }
-            else
-                return game;
         }            
+        return game;
     }
     getGames(){
         let games = [];
