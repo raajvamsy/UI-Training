@@ -1,9 +1,11 @@
 class DataStorage{    
     historyObject;
     currentGameObject;
+    games;
     constructor(){
         this.historyObject = JSON.parse(localStorage.getItem("history"));
         this.currentGameObject =JSON.parse(localStorage.getItem("current-game"));
+        this.games = [];
     }
     setData(value, data){
         localStorage.setItem(value, data);
@@ -41,10 +43,10 @@ class DataStorage{
                 game.status = element.stat;
                 games.push(game);
             })
-            return games;
+            this.games = games;
         }
         else{
-            return null;
+            this.games = [];
         }
 
     }
