@@ -1,5 +1,6 @@
+
 var logic
-var store = new DataStorage()
+var store = new DataStorage(localStorage)
 
 function create_board(index){
     var board_div = $('<div class="board-history" id="history'+(index+1)+'"></div>')
@@ -18,9 +19,10 @@ function restartGame(){
     logic.restartGame()
 }
 function displayAllGames(){
+    store.getGames();
     var games = store.games
     games.forEach((game,id)=>{
-        box = game.gameState
+        box = game.boxes
         create_board(id)
         var hidden_box = $('#history'+(id+1)+' .element');
         for(i=0; i<9; i++){
@@ -40,7 +42,7 @@ function displayGame(index, _game){
         game = _game
     if(index)
         game = store.getGamebyIndex(index-1)
-    boxes = game.gameState
+    boxes = game.boxes
     comments = game.comments
     comments.forEach((comment)=>{
         create_comment(comments.indexOf(comment), comment)
@@ -73,7 +75,7 @@ function displayCurrentGame(){
         var game = new Game()
         game.currentPlayer = current_game_object.current_player
         game.status = current_game_object.stat
-        game.gameState = current_game_object.boxes.split(',')
+        game.boxes = current_game_object.boxes.split(',')
         game.comments = current_game_object.comments
         logic = new gameLogic(game)
         displayGame(game)

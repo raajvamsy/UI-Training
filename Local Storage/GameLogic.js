@@ -1,96 +1,87 @@
-class gameLogic{
-    gameObject
-    current_player
-    boxes 
-    hiddenBox 
-
+import { Game } from './Game';
+import { DataStorage } from './DataStorage';
+export class gameLogic{
+    gameObject;
+    hiddenBox; 
+    storageObject;
     constructor(game){
         if(game)
             this.gameObject = game;
         else
             this.gameObject = new Game();
-        this.boxes = this.gameObject.gameState
-        this.current_player = this.gameObject.currentPlayer
+        this.storageObject = new DataStorage(localStorage);
     }
     playerWinCondition(){
         // checks if player won or not
-        var flag = false
+        let flag = false;
         _.map(this.gameObject._win_combo, function(str){
-            if(this.boxes[str[0]] === this.current_player && this.boxes[str[1]] === this.current_player && this.boxes[str[2]] === this.current_player)
-                flag = true
-        }.bind(this))
-        return flag
+            if(this.gameObject.boxes[str[0]] === this.gameObject.current_player && this.gameObject.boxes[str[1]] === this.gameObject.current_player && this.gameObject.boxes[str[2]] === this.gameObject.current_player)
+                flag = true;
+        }.call(this));
+        return flag;
     }
     drawCondition(){
         // checks if its draw or not
-        var count = 0
-        _.map(this.boxes, function(id){
+        let count = 0;
+        _.map(this.gameObject.boxes, function(id){
             if (id != null && id != undefined && id != "")
                 count++;
         })
-        console.log(count)
         if (count == 9)
-            return true
-        return false 
+            return true;
+        return false;
     }
     divClickOff(e){
-        $(e).off('click')
+        $(e).off('click');
     }
     divClicked(e){
-        const id = e.target.id
-        if(!this.boxes[id]){
-            this.boxes[id] = this.current_player
-            e.target.innerHTML = this.current_player
-            var store = new DataStorage()
-            if (this.playerWinCondition.bind(this)())
+        const id = e.target.id;
+        if(!this.gameObject.boxes[id]){
+            this.gameObject.boxes[id] = this.gameObject.current_player;
+            e.target.innerHTML = this.gameObject.current_player;
+            let store = new DataStorage(localStorage);
+            if (this.playerWinCondition.call(this)())
             {
-                $("#Status")[0].innerHTML =  this.current_player + " won"
-                this.gameObject.currentPlayer = this.current_player
-                this.gameObject.gameState = this.boxes
-                this.gameObject.status = this.current_player + " won"
-                _.map(this.hiddenBox, this.divClickOff)	
-                store.gameData = this.gameObject
-                localStorage.removeItem("current-game")
-                // this.save()
-                return
+                $("#Status")[0].innerHTML =  this.gameObject.current_player + " won";
+                this.gameObject.status = this.gameObject.current_player + " won";
+                _.map(this.hiddenBox, this.divClickOff);
+                store.gameData = this.gameObject;
+                localStorage.removeItem("current-game");
+                return;
             }
-            else if (this.drawCondition.bind(this)())
+            else if (this.drawCondition.call(this)())
             {
-                $("#Status")[0].innerHTML = "Draw"
-                this.gameObject.currentPlayer = this.current_player
-                this.gameObject.gameState = this.boxes
-                this.gameObject.status = "Draw"
-                store.gameData = this.gameObject
-                localStorage.removeItem("current-game")
-                // this.save()
-                return
+                $("#Status")[0].innerHTML = "Draw";
+                this.gameObject.status = "Draw";
+                store.gameData = this.gameObject;
+                localStorage.removeItem("current-game");
+                return;
             }
-            store.currentGameData = this.gameObject
-            this.current_player = this.current_player  == this.gameObject.tick_o ? this.gameObject.tick_x : this.gameObject.tick_o
+            store.currentGameData = this.gameObject;
+            this.gameObject.current_player = this.gameObject.current_player  == this.gameObject.tick_o ? this.gameObject.tick_x : this.gameObject.tick_o;
         }
     }
     divClick(e){
         if(e.innerHTML == null || e.innerHTML == "") 
-           $(e).on('click', this.divClicked.bind(this))
+           $(e).on('click', this.divClicked.call(this));
     }
     load(){
         this.hiddenBox = $(".board-container .element");
-        console.log(Object.values(this.hiddenBox))
-        _.map(this.hiddenBox, this.divClick.bind(this))	
+        _.map(this.hiddenBox, this.divClick.call(this));
 
     }    
     restartGame(){
-        this.gameObject.gameState = []
-        this.gameObject.currentPlayer = this.gameObject.tick_o
+        this.gameObject.boxes = [];
+        this.gameObject.currentPlayer = this.gameObject.tick_o;
         Object.values(this.hiddenBox).forEach((element)=>{
-            element.innerHTML = null
+            element.innerHTML = null;
         })
-        this.gameObject.status = null
-        localStorage.removeItem("current-game")
-        this.load.bind(this)
+        this.gameObject.status = null;
+        localStorage.removeItem("current-game");
+        this.load.call(this);
     }
     clearHistory(){
-        localStorage.clear()
-        $(".history")[0].innerHTML = null
+        localStorage.clear();
+        $(".history")[0].innerHTML = null;
     }
 }
